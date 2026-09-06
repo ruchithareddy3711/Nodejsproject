@@ -1,0 +1,54 @@
+name: NodeJSproject
+on:
+  push:
+    branches:
+      - main
+    pull_request:
+      branches:
+        - main
+jobs:
+  test:
+    runs on: Ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v3
+      - name: install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: install dependencies
+        run: npm ci
+        -name: run tests
+        run: npm test
+  Build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v3
+      - name: install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: install dependencies
+        run: npm ci
+        -name: Build
+        run: npm run build
+        run: echo "Building the application..."
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-file
+          path: dist
+  deploy:
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: get Build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-file
+      - name: list files
+        run: ls -la
+      - name: Deploy to server
+        run: echo "Deploying the application..."
