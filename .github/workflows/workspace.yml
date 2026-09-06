@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: 20
       - name: install dependencies
-        run: npm ci
+        run: npm install
         working-directory: .github/workflows/nodejs-github-actions-demo
       - name: run tests
         run: npm test
@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: 20
       - name: install dependencies
-        run: npm ci
+        run: npm install
         working-directory: .github/workflows/nodejs-github-actions-demo
       - name: Build
         run: echo "Build completed successfully"
